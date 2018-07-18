@@ -5,6 +5,9 @@
 
 #include "matrix.h"
 
+// Ressources, Threadds
+typedef void(*fnSetup)(int, int);
+
 // Ressource, Thread, Line
 typedef void(*fnOccupy)(Matrix*, int, int, int);
 
@@ -23,6 +26,7 @@ struct RBState {
 };
 
 struct RBHandler {
+  fnSetup setup;
   fnOccupy occupy;
   fnWait wait;
   fnPostProcessing postProcessing;

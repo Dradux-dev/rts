@@ -27,6 +27,10 @@ int loadGraph(const char* filename, Matrix* m, RBHandler handler) {
   m_create(m, threads, ressources);
   m_fill(m, RBState::FREE);
 
+  if (handler.setup) {
+    handler.setup(ressources, threads);
+  }
+
   int lineNumber = 3;
   while(!feof(fd)) {
     char* line = NULL;

@@ -16,11 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     matrix.cpp \
-    rbgraph.cpp
+    rbgraph.cpp \
+    dot.cpp
 
 HEADERS += \
     matrix.h \
-    rbgraph.h
+    rbgraph.h \
+    dot.h
 
 DISTFILES += \
     graph.txt \

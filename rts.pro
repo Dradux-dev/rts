@@ -16,4 +16,5 @@ SUBDIRS += \
     005-Token \
     005-Checksum \
     005-SelfJoin \
-    005-PKP
+    005-PKP \
+    006-Scheduling

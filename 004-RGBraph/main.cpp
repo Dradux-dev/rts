@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "dot.h"
 #include "rbgraph.h"
 #include "matrix.h"
 
@@ -24,6 +25,18 @@ void parseCommandline(int argc, char** argv)
   }
 }
 
+void setup(int ressources, int threads) {
+  dot_begin("output.dot");
+
+  for(int i = 1; i <= ressources; ++i) {
+    dot_add_ressource(i);
+  }
+
+  for(int i = 1; i <= threads; ++i) {
+    dot_add_thread(i);
+  }
+}
+
 void occupyRessource(Matrix* m, int ressource, int thread, int line) {
   for (int i = 1; i <= m->rows; ++i) {
     int actualValue;
@@ -35,6 +48,7 @@ void occupyRessource(Matrix* m, int ressource, int thread, int line) {
   }
 
   m_set(m, thread, ressource, RBState::OCCUPIED);
+  dot_occupy(ressource, thread);
 }
 
 void waitForRessource(Matrix* m, int thread, int ressource, int line) {
@@ -47,6 +61,7 @@ void waitForRessource(Matrix* m, int thread, int ressource, int line) {
   }
 
   m_set(m, thread, ressource, RBState::WAITING);
+  dot_wait(thread, ressource);
 }
 
 void postProcessing(Matrix* m) {
@@ -61,6 +76,8 @@ void postProcessing(Matrix* m) {
       }
     }
   }
+
+  dot_end();
 }
 
 int main(int argc, char** argv)
@@ -75,6 +92,7 @@ int main(int argc, char** argv)
   }
 
   RBHandler handler;
+  handler.setup = setup;
   handler.occupy = occupyRessource;
   handler.wait = waitForRessource;
   handler.postProcessing = postProcessing;
